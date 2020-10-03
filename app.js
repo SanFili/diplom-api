@@ -1,6 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const { celebrate, Joi, errors } = require('celebrate');
 
+const NotFoundError = require('./errors/not-found-err');
+
+const { PORT = 3000 } = process.env;
 const app = express();
 
 const usersRouter = require('./routes/users');
@@ -43,5 +49,20 @@ app.post('/signup',
 
 app.use('/users', auth, usersRouter);
 app.use('/cards', auth, cardsRouter);
+app.use((req, res, next) => {
+  next(new NotFoundError('Запрашиваемый ресурс не найден'));
+});
 
-app.listen(3000);
+app.use(errorLogger);
+
+app.use(errors());
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500 ? 'Ошибка на сервере' : message,
+  });
+});
+
+app.listen(PORT);
