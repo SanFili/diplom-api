@@ -11,7 +11,7 @@ const app = express();
 
 const usersRouter = require('./routes/users');
 
-const cardsRouter = require('./routes/cards');
+const articlesRouter = require('./routes/articles');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -48,7 +48,7 @@ app.post('/signup',
 
 
 app.use('/users', auth, usersRouter);
-app.use('/cards', auth, cardsRouter);
+app.use('/articles', auth, articlesRouter);
 app.use((req, res, next) => {
   next(new NotFoundError('Запрашиваемый ресурс не найден'));
 });
