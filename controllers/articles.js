@@ -29,7 +29,7 @@ module.exports.deleteArticle = (req, res, next) => {
     .orFail()
     .then((article) => {
       if (article.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(req.params.id)
+        Article.findByIdAndRemove(req.params.id)
           .then((foundArticle) => {
             if (foundArticle !== null) {
               res.status(200).send({ data: foundArticle });
