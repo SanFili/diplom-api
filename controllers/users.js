@@ -6,17 +6,15 @@ const BadRequestError = require('../errors/bad-request-err');
 const AuthError = require('../errors/auth-err');
 const ConflictError = require('../errors/conflict-err');
 
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.status(200).send({ data: users }))
+module.export.getUser = ( req, res, next ) => {
+  User.findById(req.user._id)
+    .then((user) => res.status(200).send({ data: user }))
     .catch((err) => next(err));
 };
 
 module.exports.createUser = (req, res, next) => {
-  // eslint-disable-next-line object-curly-newline
   const { email, password, name } = req.body;
   bcrypt.hash(password, 10)
-  // eslint-disable-next-line object-curly-newline
     .then((hash) => User.create({ email, password: hash, name })
       .then(() => res.status(200).send({ message: 'Вы успешно зарегестрированы!' }))
       .catch((err) => {
