@@ -16,7 +16,7 @@ const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const dbAddress = process.env.NODE_ENV !== 'production' ? 'mongodb://localhost:27017diplomdb' : process.env.DB_ADDRESS;
+const dbAddress = process.env.NODE_ENV !== 'production' ? 'mongodb://localhost:27017/diplomdb' : process.env.DB_ADDRESS;
 
 mongoose.connect(dbAddress, {
   useNewUrlParser: true,
