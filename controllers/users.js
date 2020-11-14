@@ -6,7 +6,7 @@ const BadRequestError = require('../errors/bad-request-err');
 const AuthError = require('../errors/auth-err');
 const ConflictError = require('../errors/conflict-err');
 
-module.export.getUser = ( req, res, next ) => {
+module.exports.getUser = ( req, res, next ) => {
   User.findById(req.user._id)
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => next(err));
