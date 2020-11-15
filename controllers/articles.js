@@ -25,30 +25,26 @@ module.exports.createArticle = (req, res, next) => {
 };
 
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findById(req.params.id)
-    .orFail()
-    .then((article) => {
-      if (article.owner.toString() === req.user._id) {
-        Article.findByIdAndRemove(req.params.id)
-          .then((foundArticle) => {
-            if (foundArticle !== null) {
-              res.status(200).send({ data: foundArticle });
-            } else {
-              next(new NotFoundError('Статья не найдена'));
-            }
-          })
-          .catch((err) => next(err));
-      } else {
-        next(new ForbiddenError('К сожалению, Вы не можете удалить данную статью'));
-      }
-    })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError('Передан невалидный id'));
-      } else if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Статья не найдена'));
-      } else {
-        next(err);
-      }
-    });
+Article.findById(req.params.id).select('+owner')
+  .orFail()
+  .then((article) => {
+    if (article.owner.toString() === req.user._id) {
+      Article.findByIdAndRemove(req.params.id)
+        .then((foundArticle) => {
+            res.status(200).send({ data: foundArticle });
+        })
+        .catch((err) => next(err));
+    } else {
+      next(new ForbiddenError('К сожалению, Вы не можете удалить данную статью'));
+    }
+  })
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      next(new BadRequestError('Передан невалидный id'));
+    } else if (err.name === 'DocumentNotFoundError') {
+      next(new NotFoundError('Статья не найдена'));
+    } else {
+      next(err);
+    }
+  });
 };
