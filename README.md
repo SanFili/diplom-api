@@ -1,7 +1,7 @@
 ### Backend
-- [http://api.news.students.nomoreparties.co/](http://api.news.students.nomoreparties.co/)
-- [http://www.api.news.students.nomoreparties.co/](http://www.api.news.students.nomoreparties.co/)
+- [http://www.api.news.diplom.students.nomoreparties.space/](http://www.api.news.diplom.students.nomoreparties.space/)
+- [http://api.news.diplom.students.nomoreparties.space/](http://api.news.diplom.students.nomoreparties.space/)
 
 ### Публичный IP
 
-130.193.41.26
+130.193.50.238
