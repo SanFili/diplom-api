@@ -10,25 +10,7 @@ const NotFoundError = require('./errors/not-found-err');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-const usersRouter = require('./routes/users');
-
-const articlesRouter = require('./routes/articles');
-const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const dbAddress = process.env.NODE_ENV !== 'production' ? 'mongodb://localhost:27017/diplomdb' : process.env.DB_ADDRESS;
-
-mongoose.connect(dbAddress, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
-
-const whiteList = [
-  'http://localhost:3000',
-  'http://localhost:8080',
+const whitelist = [
   'http://www.api.news.diplom.students.nomoreparties.space',
   'http://api.news.diplom.students.nomoreparties.space',
   'http://www.news.diplom.students.nomoreparties.space',
@@ -41,7 +23,7 @@ const whiteList = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whiteList.indexOf(origin) !== -1 || !origin) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'))
