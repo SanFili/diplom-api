@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const NotFoundError = require('./errors/not-found-err');
@@ -20,12 +20,13 @@ const whitelist = [
   'https://www.news.diplom.students.nomoreparties.space',
   'https://news.diplom.students.nomoreparties.space',
 ];
+
 const corsOptions = {
-  origin: (origin, callback) => {
+  origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'))
     }
   },
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -40,24 +41,6 @@ const corsOptions = {
   ],
   credentials: true,
 };
-
-app.use(cors(corsOptions));
-
-const usersRouter = require('./routes/users');
-
-const articlesRouter = require('./routes/articles');
-const { login, createUser } = require('./controllers/users');
-const auth = require('./middlewares/auth');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const dbAddress = process.env.NODE_ENV !== 'production' ? 'mongodb://localhost:27017/diplomdb' : process.env.DB_ADDRESS;
-
-mongoose.connect(dbAddress, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
 
 app.use(bodyParser.json());
 
