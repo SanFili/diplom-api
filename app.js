@@ -11,9 +11,14 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 const whitelist = [
-  'http://localhost:8080',
-  'http://diploma-web.tk',
-  'https://diploma-web.tk',
+  'http://www.api.news.diplom.students.nomoreparties.space',
+  'http://api.news.diplom.students.nomoreparties.space',
+  'http://www.news.diplom.students.nomoreparties.space',
+  'http://news.diplom.students.nomoreparties.space',
+  'https://www.api.news.diplom.students.nomoreparties.space',
+  'https://api.news.diplom.students.nomoreparties.space',
+  'https://www.news.diplom.students.nomoreparties.space',
+  'https://news.diplom.students.nomoreparties.space',
 ];
 const corsOptions = {
   origin: (origin, callback) => {
@@ -57,6 +62,8 @@ mongoose.connect(dbAddress, {
 app.use(bodyParser.json());
 
 app.use(requestLogger);
+
+app.use(cors(corsOptions));
 
 app.post('/signin',
   celebrate({
