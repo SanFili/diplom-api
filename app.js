@@ -1,42 +1,14 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const NotFoundError = require('./errors/not-found-err');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-
-const whitelist = [
-  'http://localhost:8080',
-  'http://diploma-web.tk',
-  'https://diploma-web.tk',
-];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: [
-    'Content-Type',
-    'origin',
-    'x-access-token',
-    'authorization',
-    'credentials',
-  ],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
 
 const usersRouter = require('./routes/users');
 
@@ -54,9 +26,45 @@ mongoose.connect(dbAddress, {
   useUnifiedTopology: true,
 });
 
+const whiteList = [
+  'http://localhost:3000',
+  'http://localhost:8080',
+  'http://www.api.news.diplom.students.nomoreparties.space',
+  'http://api.news.diplom.students.nomoreparties.space',
+  'http://www.news.diplom.students.nomoreparties.space',
+  'http://news.diplom.students.nomoreparties.space',
+  'https://www.api.news.diplom.students.nomoreparties.space',
+  'https://api.news.diplom.students.nomoreparties.space',
+  'https://www.news.diplom.students.nomoreparties.space',
+  'https://news.diplom.students.nomoreparties.space',
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whiteList.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: [
+    'Content-Type',
+    'origin',
+    'x-access-token',
+    'authorization',
+    'credentials',
+  ],
+  credentials: true,
+};
+
 app.use(bodyParser.json());
 
 app.use(requestLogger);
+
+app.use(cors(corsOptions));
 
 app.post('/signin',
   celebrate({
