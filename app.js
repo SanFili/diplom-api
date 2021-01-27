@@ -28,10 +28,10 @@ mongoose.connect(dbAddress, {
 
 const whiteList = [
   'http://localhost:8080',
-  'http://www.news.diplom.students.nomoreparties.space',
-  'http://news.diplom.students.nomoreparties.space',
-  'https://www.news.diplom.students.nomoreparties.space',
-  'https://news.diplom.students.nomoreparties.space',
+  'http://www.diplom.san.students.nomoreparties.space',
+  'http://diplom.san.students.nomoreparties.space',
+  'https://www.diplom.san.students.nomoreparties.space',
+  'https://diplom.san.students.nomoreparties.space',
 ];
 
 const corsOptions = {
@@ -44,7 +44,7 @@ const corsOptions = {
   },
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200,
   allowedHeaders: [
     'Content-Type',
     'origin',
