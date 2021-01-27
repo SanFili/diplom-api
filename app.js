@@ -27,14 +27,9 @@ mongoose.connect(dbAddress, {
 });
 
 const whiteList = [
-  'http://localhost:3000',
   'http://localhost:8080',
-  'http://www.api.news.diplom.students.nomoreparties.space',
-  'http://api.news.diplom.students.nomoreparties.space',
   'http://www.news.diplom.students.nomoreparties.space',
   'http://news.diplom.students.nomoreparties.space',
-  'https://www.api.news.diplom.students.nomoreparties.space',
-  'https://api.news.diplom.students.nomoreparties.space',
   'https://www.news.diplom.students.nomoreparties.space',
   'https://news.diplom.students.nomoreparties.space',
 ];
@@ -100,7 +95,7 @@ app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
-    message: statusCode === 500 ? 'Ошибка на сервере' : message,
+    message: statusCode === 500 ? 'Ошибка на сервере' : `Ошибка: ${message}`,
   });
 });
 
